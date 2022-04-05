@@ -13,16 +13,15 @@ const oauth2Client = new OAuth2(
 )
 
 oauth2Client.setCredentials({
-    refresh_token: "1//04AC9MWkHamtPCgYIARAAGAQSNwF-L9Irzuy3GCJRZUyzq4COcbsSMR09NseTdxJ6vcZ3SMVHitvynJmcOnV2Cb-BZWzeuulLfCs"
 })
 
 const cal = google.calendar({ version: 'v3', auth: oauth2Client})
 
 const start = new Date()
-start.setDate(start.getDay())
+start.setDate(start.getDate())
 
 const end = new Date()
-end.setDate(end.getDay())
+end.setDate(end.getDate())
 end.setMinutes(end.getMinutes() + 20)
 
 const event = {
@@ -54,10 +53,14 @@ app.get('/', (req, res) => {
     }, function(err, event) {
         if (err) {
           console.log('There was an error contacting the Calendar service: ' + err);
+          res.status(500).json(err) 
           return;
         }
-        return console.log('Event created: %s', event.htmlLink);
+        console.log('Event created');
+        res.status(200).json(event) 
+        return
       })
+    
 })
 
 app.listen(port, () => {
